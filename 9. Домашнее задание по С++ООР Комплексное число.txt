@@ -1,0 +1,140 @@
+Создайте класс Complex (комплексное число) или используйте уже созданный вами класс. Создайте перегруженные
+операторы для реализации арифметических операций для
+по работе с комплексными числами (операции +, -, *).
+______________________________________________________-
+#include <iostream>
+#include <Windows.h>
+#include <string.h>
+#include <cmath>
+
+using namespace std;
+
+class Complex         // класс "Комплексное число"
+{
+private:
+    double de, im;      // действительная и мнимая части
+
+public:
+    // конструкторы 
+
+    Complex()
+    {
+    };
+
+    Complex(double r)
+    {
+        de = r;
+        im = 0;
+    }
+
+    Complex(double r, double i)
+    {
+        de = r;
+        im = i;
+    }
+
+    Complex(const Complex& c)   // конструктор копирования
+    {
+        de = c.de;
+        im = c.im;
+    }
+
+    // деструктор
+    ~Complex()
+    {
+    }
+
+    // остальные функции
+
+    // Модуль комплексного числа
+    double abs()
+    {
+        return sqrt(de * de + im * im);
+    }
+
+    // оператор присваивания
+    Complex& operator = (Complex& c)
+    {
+        de = c.de;
+        im = c.im;
+
+        return (*this);
+    }
+
+
+    // оператор +=
+    Complex& operator += (Complex& c)
+    {
+        de += c.de;
+        im += c.im;
+        return *this;
+    }
+
+    // оператор сложения
+    Complex operator + (const Complex& c)
+    {
+        return Complex(de + c.de, im + c.im);
+    }
+
+    // оператор вычитания
+    Complex operator - (const Complex& c)
+    {
+        return Complex(de - c.de, im - c.im);
+    }
+
+    // оператор умножения
+    Complex operator * (const Complex& c)
+    {
+        return Complex(de * c.de - im * c.im, de * c.im + im * c.de);
+    }
+
+    // оператор деления
+    Complex operator / (const Complex& c)
+    {
+        Complex temp;
+
+        double r = c.de * c.de + c.im * c.im;
+        temp.de = (de * c.de + im * c.im) / r;
+        temp.im = (im * c.de - de * c.im) / r;
+
+        return temp;
+    }
+
+    // укажем дружественные операторы, которым мы разрешаем доступ
+    // к личным (private) данным
+    friend ostream& operator<< (ostream&, const Complex&);
+    friend istream& operator>> (istream&, Complex&);
+
+};
+
+// перегрузка оператора <<
+ostream& operator<< (ostream& out, const Complex& c)
+{
+    out << "(" << c.de << ", " << c.im << ")";
+    return out;
+}
+
+// перегрузка оператора >>
+istream& operator>> (istream& in, Complex& c)
+{
+    in >> c.de >> c.im;
+    return in;
+}
+
+int
+main()
+{
+    system("chcp 1251");
+    Complex a(5, 2);
+    cout <<"a:  " << a << endl;
+    Complex b(3, -3);
+    cout <<"b:  " << b << endl << endl;
+  
+    cout <<"'+': 5 + 2i + 3 + (-3)i = (5 + 3) + (2 + (-3))i = 8 - 1i;   " << a + b << endl;
+    cout <<"'-': 5 + 2i - 3 + (-3)i = (5 - 3) + (2 - (-3))i = 2 5i;     " << a - b << endl;
+    cout <<"'*': (5 + 2i) * (3 + (-3)i) = (5*3 - 2*(-3)) + (5*(-3) + 2*3)i = (15 - (-6)) + (-15 + 6)i = 21 - 9i;   " << a * b << endl;
+    cout <<"'/': (5 + 2i)/(3 + (-3)i)=(5*3 + 2*(-3))/(32 + (-32))+(3*2 - 5*(-3))/(32 + (-32))i=(15 + (-6))/(9 + 9) +(6 - (-15))/(9 + 9) i=9/18+21/18 i= 0.5 + 1.1666666666667i;  " 
+         << a / b << endl;
+    return 0;
+}
+____________________________________

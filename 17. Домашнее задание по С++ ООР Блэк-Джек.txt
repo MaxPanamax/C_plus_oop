@@ -1,0 +1,231 @@
+//Написать программу, которая на основе классов реализует карточную игру Блэк - Джек.
+//
+//Правила игры :
+//https://ru.wikipedia.org/wiki/%D0%91%D0%BB%D1%8D%D0%BA%D0%B4%D0%B6%D0%B5%D0%BA
+//
+//https://logincasino.com/article/blekdjek-korol-igornih-stolov-ili-vtoraya-skripka-kazino44214.html
+
+#include <iostream>
+
+using namespace std;
+//
+
+
+class Blackjack
+{
+public:
+    Blackjack();
+    void playGame();
+
+private:
+    int dhand[5];//дилер рука
+    int phand[5];//игрок рука
+    int dhandSize;//размер руки дилера
+    int phandSize;//размер руки игрока
+    int dhandSum;//сумма руки дилера
+    int phandSum;//сумма руки игрока
+    int phit;//выбор
+    bool playerDone;//сделал игрок
+    bool dealerDone;//сделал дилер
+    void addPlayerCard();//Добавить карточку игрока
+    void addDealerCard();//Добавить карточку дилера
+    void printHand();//печать
+    void sumHands();//сумма руки
+};
+
+void Blackjack::addPlayerCard()
+{
+    if (phandSize <= 5)
+    {
+        phand[phandSize] = 1 + (rand() % 11);
+        phandSize++;
+    }
+    else
+    {
+        cout << "Извините. Вы набрали максимальное количество карт (5)." << endl;
+        playerDone = true;
+    }
+}
+
+void Blackjack::addDealerCard()
+{
+    if (dhandSize <= 5)
+    {
+        dhand[dhandSize] = 1 + (rand() % 11);
+        dhandSize++;
+    }
+    else
+    {
+        dealerDone = true;
+    }
+}
+
+void Blackjack::printHand()
+{
+    cout << "Ваша текущая рука такова..."<<endl;
+
+    for (int i = 0; i < phandSize; i++)
+    {
+        cout << "    -" << phand[i] << "-    "<<endl<<endl;
+    }
+
+    cout << "Текущая рука дилера равна..."<<endl;
+
+    for (int j = 0; j < dhandSize; j++)
+    {
+        cout << "    -" << dhand[j] << "-    " << endl << endl;
+    }
+}
+
+void Blackjack::sumHands()
+{
+    dhandSum = 0;
+    phandSum = 0;
+    for (int i = 0; i < dhandSize; i++)
+    {
+        dhandSum += dhand[i];
+    }
+
+    for (int j = 0; j < phandSize; j++)
+    {
+        phandSum += phand[j];
+    }
+
+    cout << "Текущая сумма раздачи игрока равна: " << phandSum << endl;
+}
+
+Blackjack::Blackjack()
+{
+    srand(time(0));
+    dhandSize = 0;
+    phandSize = 0;
+    dhandSum = 0;
+    phandSum = 0;
+    playerDone = false;
+    dealerDone = false;
+}
+
+void Blackjack::playGame()
+{
+    cout << "Добро пожаловать в Блэкджек!"<<endl;
+
+    // Начните с игрока и дилера с двумя картами
+    addPlayerCard();
+    addPlayerCard();
+    addDealerCard();
+    addDealerCard();
+    sumHands();
+    printHand();
+
+    if (dhandSum == 21)
+    {
+        cout << "У дилера есть блэкджек. Дилер выигрывает." << endl;
+        return;
+    }
+    else if (phandSum == 21)
+    {
+        cout << "У игрока есть блэкджек. Игрок выигрывает." << endl;
+        return;
+    }
+
+    while (dealerDone == false || playerDone == false)
+    {
+        if (playerDone == false)
+        {
+            cout << "Не хотели бы вы добрать? (1 - Да, 2 - Нет)" << endl;
+            cin >> phit;
+
+            if (phit == 1)
+            {
+                addPlayerCard();
+                printHand();
+                sumHands();
+
+                if (phandSum > 21)
+                {
+                    cout << "Рука игрока превысила 21. Игрок проигрывает." << endl;
+                    return;
+                }
+            }
+        }
+
+        if (phit == 2)
+        {
+            playerDone = true;
+        }
+
+        if (dhandSum < 17 && dealerDone != true)
+        {
+            addDealerCard();
+            printHand();
+            sumHands();
+
+            if (dhandSum > 21)
+            {
+                cout << "Рука дилера превысила 21. Дилер проигрывает." << endl;
+                return;
+            }
+        }
+        else if (dhandSum >= 17)
+        {
+            dealerDone = true;
+        }
+
+        if (phandSum == 21 && dhandSum == 21)
+        {
+            cout << "Толчок, игрок и дилер достигли 21." << endl;
+            return;
+        }
+        else if (phandSum == 21)
+        {
+            cout << "Игрок достиг 21 года. Игрок выигрывает." << endl;
+            return;
+        }
+        else if (dhandSum == 21)
+        {
+            cout << "Дилер достиг 21. Дилер выигрывает." << endl;
+            return;
+        }
+
+        if ((playerDone == true && dealerDone == true) || (phandSize == 5 && phandSize == 5))
+        {
+            if (dhandSum < phandSum)
+            {
+                cout << "Сумма вашей руки превышает сумму дилера в " << dhandSum << "! Ты победил!";
+                return;
+            }
+            else if (phandSum == dhandSum)
+            {
+                cout << "Дилерская сумма " << dhandSum << " равна сумме вашей руки. Игра вничью.";
+                return;
+            }
+            else if (dhandSum > phandSum)
+            {
+                cout << "Сумма вашей руки меньше, чем сумма дилера" << dhandSum << ". Ты проиграл!";
+                return;
+            }
+        }
+    }
+}
+
+
+int main()
+{
+    system("chcp 1251");
+        int exitGame = 1;//переменая для выхода
+
+    do
+    {
+        Blackjack casino_royale;
+        casino_royale.playGame();
+        cout << endl << "Хотели бы вы снова поиграть? (1 - Да, 2 - Нет)" << endl;
+        cin >> exitGame;
+    } while (exitGame == 1);
+
+
+    cout << endl << "Спасибо за игру!" << endl;
+    system("pause");
+    return 0;
+}
+
+

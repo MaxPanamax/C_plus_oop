@@ -1,0 +1,21 @@
+//Задание №1
+//Напишите шаблон функции, которая возвращает максимум из
+//двух переданных параметров
+#include <iostream>
+#include <Windows.h>
+ 
+using namespace std;
+
+template < typename T,typename T1>  auto Maximum_return(T parametr1, T1 parametr2)
+{
+	return parametr1 > parametr2 ? parametr1 : parametr2;
+} 
+
+int main()
+{
+	system("chcp 1251");
+	
+	cout<<Maximum_return(5.5, 6);
+	return 0;
+
+}

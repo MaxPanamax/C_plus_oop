@@ -1,0 +1,126 @@
+Задание №1(Пономаренко М.Б.)
+Реализуйте класс “Точка”. Необходимо хранить координаты
+x, y, z в переменных-членах класса. Реализуйте функции-члены
+класса для ввода данных, вывода данных, реализуйте аксессоры для доступа к переменным-членам, реализуйте сохранение в
+файл и загрузку данных из файла.
+К уже реализованному классу Точка добавьте необходимые
+конструкторы, сделайте ряд функций inline, используйте инициализаторы  !!! К заданию добавил с консоли запись координат пользоватилем!!!!
+________________________________________----
+#include <iostream>
+#include <Windows.h>
+#include <fstream>
+						
+using namespace std;
+
+class Point
+{
+
+public:
+	int X, Y, Z;
+
+	Point() { X = Y = Z = 0; }
+
+
+	Point(int X, int Y, int Z)
+	{
+		this->X = X;
+		this->Y = Y;
+		this->Z = Z;
+	}
+	void Print()
+	{
+		cout << " x: " << X << " y: " << Y << " z: " << Z << endl;
+	}
+	void setX(int koordin)
+	{
+		X = koordin;
+	}
+	int getX()
+	{
+		return X;
+	}
+	void setY(int koordin)
+	{
+		Y = koordin;
+	}
+	int getY()
+	{
+		return Y;
+	}
+	void setZ(int koordin)
+	{
+		Z = koordin;
+	}
+	int getZ()
+	{
+		return Z;
+	}
+
+	inline void Vvod()
+	{
+		cout << " Введите значения координат точек X,Y,Z:  " << endl;
+		cin >> X;cin >> Y;cin >> Z;
+	}
+	inline void Vyvod()
+	{
+		cout << " X = " << X << endl;
+		cout << " Y = " << Y << endl;
+		cout << " Z = " << Z << endl;
+	}
+
+
+	~Point() {};
+	void Vpisanie_v_blaknot(string Path, Point Koord)
+	{
+
+		ofstream fout;
+		fout.open(Path, ofstream::app);
+		if (!fout.is_open())
+		{
+			cout << " Ошибка открытия файла" << endl;
+		}
+		else
+		{
+			cout << " Файл открыт! " << endl;
+			fout.write((char*)&Koord, sizeof(Point));
+		}
+		fout.close();
+	}
+
+	void Vypishit_iz_blaknot(string Path)
+	{
+		ifstream fin;
+		fin.open(Path);
+		if (!fin.is_open())
+		{
+			cout << " Ошибка открытия файла" << endl;
+		}
+		else
+		{
+			cout << " Файл открыт! " << endl;
+			Point pnt;
+			while (fin.read((char*)&pnt, sizeof(Point)))
+			{
+				pnt.Print();
+			}
+
+		}
+		fin.close();
+	}
+};
+
+
+int main()
+{
+	system("chcp 1251");
+	Point Koordinaty1;
+	Koordinaty1.Vvod();
+	Koordinaty1.Vyvod();
+	// Запись файла в блокнот и взятие его от туда для консоли
+	string path = "myFile.txt";
+	
+	//То что мы заполненли с консоли
+	Koordinaty1.Vpisanie_v_blaknot(path, Koordinaty1);
+	Koordinaty1.Vypishit_iz_blaknot(path);
+	return 0;
+}

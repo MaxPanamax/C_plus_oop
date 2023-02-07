@@ -1,0 +1,74 @@
+//Написать программу, которая реализует функцию
+//с неограниченным количеством параметров, которая считает факториал числа.
+//
+//Что такое факториал числа и какульлятор факториала
+//https ://www.rapidus.ru/factorial-calculator.html
+// Певый вариант !!!
+#include <iostream>
+#include <Windows.h>
+
+using namespace std;
+
+void Factorial(int k, ...)
+{
+    int* ptk = &k;
+    long sumi = 1;
+    ++ptk;
+    for (; k; k--)
+    {
+        for (int i = 1; i <= *ptk; i++)
+        {
+            sumi = sumi * i;
+        }
+        cout << "факториал " << *ptk << " : " << sumi << "\n";
+        sumi = 1;
+        ++ptk;
+    }
+}
+int main()
+{
+    system("chcp 1251");
+    Factorial(2, 5, 8);
+    Factorial(4, 7, 6, 3, 9);
+    
+    return 0;
+}
+//__________________________________________________________-
+//Ворой вариант!!!
+//Написать программу, которая реализует функцию
+//с неограниченным количеством параметров, которая считает факториал числа.
+//
+//Что такое факториал числа и какульлятор факториала
+//https ://www.rapidus.ru/factorial-calculator.html
+#include <iostream>
+#include <Windows.h>
+
+using namespace std;
+
+
+long Factorial(int ch, ...)
+{
+	if (ch < 0) // если пользователь ввел отрицательное число
+		return 0; // возвращаем ноль
+	if (ch == 0) // если пользователь ввел ноль.
+		return 1; // возвращаем факториал от нуля. 
+	if (ch == 1)
+		return 1;
+	
+	int* pkt = &ch;
+	long fact = 1;
+	while (*pkt)
+	{
+		fact *= *(pkt++);
+	}
+	return fact;
+}
+
+
+int main()
+{
+	system("chcp 1251");
+	cout<<"Факториал 6:  " << Factorial(6, 5, 4, 3, 2, 1, 0) << endl;
+	cout<<"Факториал 9:  " << Factorial(9, 8, 7, 6, 5, 4, 3, 2, 1, 0) << endl;
+	cout <<"Факториал 5:  " << Factorial(5, 4, 3, 2, 1, 0) << endl;
+}

@@ -1,0 +1,214 @@
+//Создайте класс «Комплексное число» - Complex.Класс должен
+//содержать несколько конструкторов.
+//Класс должен иметь возможность вводить и выводить комплексные
+//числа посредством перегруженных операций >> и << .
+//Перегрузите операции != , == , ().
+//Используйте обычную и дружественную перегрузку.
+#include <iostream>
+#include <Windows.h>
+#include <string.h>
+#include <cmath>
+
+using namespace std;
+
+class Complex         // класс "Комплексное число"
+{
+private:
+    double de, im;      // действительная и мнимая части
+
+public:
+    // конструкторы 
+
+    Complex()
+    {
+    };
+
+    Complex(double r)
+    {
+        de = r;
+        im = 0;
+    }
+
+    Complex(double r, double i)
+    {
+        de = r;
+        im = i;
+    }
+
+    Complex(const Complex& c)   // конструктор копирования
+    {
+        de = c.de;
+        im = c.im;
+    }
+
+    // деструктор
+    ~Complex()
+    {
+    }
+
+    // остальные функции
+
+    // Модуль комплексного числа
+    double abs()
+    {
+        return sqrt(de * de + im * im);
+    }
+
+    // оператор присваивания
+    Complex& operator = (const Complex& c)
+    {
+        de = c.de;
+        im = c.im;
+
+        return (*this);
+    }
+
+
+    // оператор +=
+    Complex& operator += (Complex& c)
+    {
+        de += c.de;
+        im += c.im;
+        return *this;
+    }
+
+    // оператор сложения
+    Complex operator + (const Complex& c)
+    {
+        return Complex(de + c.de, im + c.im);
+    }
+
+    // оператор вычитания
+    Complex operator - (const Complex& c)
+    {
+        return Complex(de - c.de, im - c.im);
+    }
+
+    // оператор умножения
+    Complex operator * (const Complex& c)
+    {
+        return Complex(de * c.de - im * c.im, de * c.im + im * c.de);
+    }
+
+    // оператор деления
+    Complex operator / (const Complex& c)
+    {
+        Complex temp;
+
+        double r = c.de * c.de + c.im * c.im;
+        temp.de = (de * c.de + im * c.im) / r;
+        temp.im = (im * c.de - de * c.im) / r;
+
+        return temp;
+    }
+    //Оперетоор сраснения.
+    friend Complex operator == (const Complex& c, const Complex& c1)
+    {
+        if (c.de == c1.de || c.im == c1.im)
+        {
+            cout << " Равны! " << endl;
+        }
+        else
+        {
+            cout << " Не равны! " << endl;
+        }
+        Complex ba;
+        return ba;
+    }
+    //Оператор не расенства.
+    friend Complex operator != (const Complex& c, const Complex& c1)
+    {
+        if (c.de != c1.de || c.im != c1.im)
+        {
+            cout << " Не равны! " << endl;
+        }
+        else
+        {
+            cout << " Равны! " << endl;
+        }
+        Complex ba;
+        return ba;
+    }
+   Complex operator()(const Complex& a)
+   {
+       de = a.de;
+       im = a.im;
+
+       return (*this);
+   }
+ 
+
+    // укажем дружественные операторы, которым мы разрешаем доступ
+    // к личным (private) данным
+    friend ostream& operator<< (ostream&, const Complex&);
+    friend istream& operator>> (istream&, Complex&);
+
+};
+
+// перегрузка оператора <<
+ostream& operator<< (ostream& out, const Complex& c)
+{
+    out << "(" << c.de << ", " << c.im << ")";
+    return out;
+}
+
+// перегрузка оператора >>
+istream& operator>> (istream& in, Complex& c)
+{
+    in >> c.de >> c.im;
+    return in;
+}
+
+int
+main()
+{
+    system("chcp 1251");
+    Complex a{ 5, 2 };
+    cout << "a:  " << a << endl;
+    Complex b{ 3, -3 };
+    cout << "b:  " << b << endl << endl;
+
+    cout << "'+': 5 + 2i + 3 + (-3)i = (5 + 3) + (2 + (-3))i = 8 - 1i;   " << a + b << endl;
+    cout << "'-': 5 + 2i - 3 + (-3)i = (5 - 3) + (2 - (-3))i = 2 5i;     " << a - b << endl;
+    cout << "'*': (5 + 2i) * (3 + (-3)i) = (5*3 - 2*(-3)) + (5*(-3) + 2*3)i = (15 - (-6)) + (-15 + 6)i = 21 - 9i;   " << a * b << endl;
+    cout << "'/': (5 + 2i)/(3 + (-3)i)=(5*3 + 2*(-3))/(32 + (-32))+(3*2 - 5*(-3))/(32 + (-32))i=(15 + (-6))/(9 + 9) +(6 - (-15))/(9 + 9) i=9/18+21/18 i= 0.5 + 1.1666666666667i;  "
+        << a / b << endl;
+    cout << "Сравнения ==: " << endl;
+    Complex b1{ 4, -4 };
+    cout << "b:  " << b1 << endl << endl;
+    Complex b2{ 4, -4 };
+    cout << "b:  " << b2 << endl << endl;
+    b1 == b2;
+
+    cout << "a:  " << a << endl;
+    cout << "b:  " << b << endl << endl;
+    a == b;
+
+    cout << " Неравенства !=: " << endl;
+    Complex b3{ 5, -7 };
+    cout << "b:  " << b3 << endl << endl;
+    Complex b4{ 1, -2 };
+    cout << "b:  " << b4 << endl << endl;
+    b3 != b4;
+
+    cout << "b:  " << b2 << endl << endl;
+    cout << "b:  " << b1 << endl << endl;
+    b1 != b2;
+    cout << " Оператор ввода(>>): " << endl;
+    Complex b5;
+    cout<< "Введите значение b " << endl;
+    cin >> b5;
+    cout << " b: " << b5 << endl << endl;
+    cout << " Оператор вывода(<<): " << endl;
+    Complex b6 (7, -5);
+    cout << " b: " << b6 << endl << endl;
+    cout << " Оператор = :  " << endl;
+    Complex b7;
+    b7 = b6;
+    cout << " b: " << b7 << endl << endl;
+    cout << " Оператор ():  " << endl;
+    Complex b8;
+    b8(b6);
+    cout << " b: " << b8 << endl << endl;
+    return 0;
+}

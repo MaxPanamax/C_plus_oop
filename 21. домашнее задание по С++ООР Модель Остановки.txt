@@ -1,0 +1,133 @@
+//Задание 1.
+//Создать имитационную модель "остановка маршрутных такси". 
+// Необходимо вводить следующую информацию:
+//среднее время между появлениями пассажиров на остановке в разное время суток
+//  среднее время между появлениями маршруток на остановке в разное время суток,
+//тип остановки(конечная или нет).
+// Необходимо определить : среднее время пребывание человека на остановке,
+//достаточный интервал времени между приходами маршруток, 
+// чтобы на остановке находилось не более N людей одновременно.
+// Количество свободных мест в маршрутке является случайной величиной.
+
+
+#include <iostream>
+#include <string.h>
+#include <time.h>
+
+
+using namespace std;
+
+class Ochered_na_ostanovki
+{
+	double pasgirov_min;
+	double marsgrutka_v_kal_min;
+	int mest_v_amrshrutke;
+	int max_chel_ostanovka;
+public:
+	Ochered_na_ostanovki(int N);
+	Ochered_na_ostanovki(double initData1, double initData2, int N);
+
+	void showData();
+};
+
+// конструктор класса _2Data с параметрами
+Ochered_na_ostanovki::Ochered_na_ostanovki(double initpasgirov_min, double initmarsgrutok_v_kal_min, int N)
+{
+	pasgirov_min = initpasgirov_min;
+	marsgrutka_v_kal_min = initmarsgrutok_v_kal_min;
+	max_chel_ostanovka = N;
+	cout << "\nСработал конструктор с параметрами.\n";
+}
+
+// конструктор класса _2Data без параметров
+Ochered_na_ostanovki::Ochered_na_ostanovki(int N)
+{
+	pasgirov_min = 0;
+	marsgrutka_v_kal_min = 0;
+	mest_v_amrshrutke = 0;
+	 max_chel_ostanovka=N;
+	cout << "\nСработал конструктор без параметров.\n";
+}
+
+void Ochered_na_ostanovki::showData() // метод вывода на экран
+{
+	int i;
+	int ostatok1;
+	int ostatok;
+	i = (pasgirov_min * marsgrutka_v_kal_min);
+	cout  <<" Всего пасажиров: " << i << endl;
+	cout << " Мест в транспорте: " << (mest_v_amrshrutke = rand() % 18) << endl;
+	if (mest_v_amrshrutke>=i)
+	{
+		
+		cout << pasgirov_min * marsgrutka_v_kal_min << " пасажир ождали: " << marsgrutka_v_kal_min<<" минут" << endl;
+	}
+	else
+	{
+		ostatok = (pasgirov_min * marsgrutka_v_kal_min) - mest_v_amrshrutke;
+		cout << ostatok << " в транспорт не попали" << endl;
+		
+		if (ostatok <= (mest_v_amrshrutke = rand() % 18))
+		{
+			cout << ostatok << "  будет ожидать следующего транспорта,  время ожиданя этих пасажиров: " << marsgrutka_v_kal_min * 2 <<" минут" << endl;
+		
+			/*showData();*/
+			i = ((pasgirov_min * marsgrutka_v_kal_min)+ostatok);
+			cout << " Всего пасажиров: " << i << endl;
+			cout << " Мест в транспорте: " << (mest_v_amrshrutke = rand() % 18) << endl;
+			if (mest_v_amrshrutke >= i)
+			{
+
+				cout << pasgirov_min * marsgrutka_v_kal_min << " пасажир ожидали: " << marsgrutka_v_kal_min << " минут" << endl;
+				cout << ostatok << " пасажир: " << marsgrutka_v_kal_min * 2 << " минут" << endl;
+			}
+			else
+			{
+				
+				ostatok1 =(ostatok+ (pasgirov_min * marsgrutka_v_kal_min)) - mest_v_amrshrutke;
+				cout << ostatok1 << " в транспорт не попали" << endl;
+
+				if (ostatok1 <= (mest_v_amrshrutke = rand() % 18))
+				{
+					cout << ostatok1 << "  будет ожидать следующего транспорта,  время ожиданя этих пасажиров: " << marsgrutka_v_kal_min * 2 << " минут" << endl;
+
+				}
+				if ((pasgirov_min * marsgrutka_v_kal_min) > max_chel_ostanovka)
+				{
+					cout << " Необходимо уменьшить интервалы между транспортоп, так как ожидающих больше максимально возможного" << endl;
+					cout << (pasgirov_min * marsgrutka_v_kal_min)<<" количество человек на остановке одновременно" << endl;
+					cout << max_chel_ostanovka<<" допустимое количество человек на остоновке одновременнно" << endl;
+				}
+				else
+				{
+					cout << (pasgirov_min * marsgrutka_v_kal_min) << " количество человек на остановке одновременно" << endl;
+					cout << max_chel_ostanovka << " допустимое количество человек на остоновке одновременнно" << endl;
+					cout << " Пораметры модели пригодны для использования, так ка количество человек не привышает допустимых норм" << endl;
+				}
+			
+			}
+			
+		}
+	}
+
+	
+}
+
+
+int main()
+{
+	system("chcp 1251");
+
+	Ochered_na_ostanovki Obj2(1, 10,15);
+	Obj2.showData(); // смотрим значения
+	Ochered_na_ostanovki Obj3(0.5, 10,15);
+	Obj3.showData(); // смотрим значения
+	Ochered_na_ostanovki Obj4(0.3, 12,20);
+	Obj4.showData(); // смотрим значения
+	Ochered_na_ostanovki Obj5(0.7, 15,20);
+	Obj5.showData(); // смотрим значения
+	Ochered_na_ostanovki Obj6(1.2, 8,10);
+	Obj6.showData(); // смотрим значения
+	Ochered_na_ostanovki Obj7(2, 6,15);
+	Obj7.showData(); // смотрим значения
+}

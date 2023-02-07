@@ -1,0 +1,143 @@
+//Вариант 1
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class pasport
+{
+public:
+	pasport() {}
+	pasport(string name, string famali, string date)
+	{
+		this->name = name, this->famali = famali, this->date = date;
+	}
+	pasport(string name, string f_name, string famali, string date, string regist, string vydan)
+	{
+		this->name = name;
+		this->f_name = f_name;
+		this->famali = famali;
+		this->date = date;
+		this->regist = regist;
+		this->vydan = vydan;
+	}
+	void vyvod(){}
+	string getname() { return name; }
+	string getfamali() { return famali; }
+	string getdate() { return date; }
+	string getf_name() { return f_name; }
+	string getregist() { return regist; }
+	string getvydan() { return vydan; }
+	void setname(string name) { this->name = name; }
+	void setfamali(string famali) { this->famali = famali; }
+	void setdate(string date) { this->date = date; }
+	virtual void Output() {
+		cout << this->getname() << " "<< this->getf_name()
+			<< " " << this->getfamali() << " " << this->getdate()<<" "<<this->getregist()<<" "<<this->getvydan()<<endl;
+	}
+	~pasport() {}
+
+private:
+	string famali;
+	string date;
+	string name;
+	string f_name;
+	string regist;
+	string vydan;
+};
+class zag_pasport :public pasport
+{
+public:
+	zag_pasport(string name, string famali, string date):pasport(name, famali, date) {}
+	~zag_pasport() {}
+	string getviza() { return viza; }
+	void setviza(string viza) { this->viza = viza; }
+	void Output()override {
+		cout << getname() << " " << getfamali() << " " << " " << getdate()<<" "<<viza<<endl;
+	}
+private:
+	string viza = {"Американская виза"};
+};
+
+
+	int main()
+	{
+		system("chcp 1251");
+		pasport pasport2("Максим", "Борисович", "Пономаренко", "06.05.1978", "калиниград", "овд калиниград");
+		cout << "Паспотр гражданский: " << endl;
+		pasport2.Output();
+		pasport* pasport1=new zag_pasport("Максим", "Пономаренко", "06.05.1978");
+		cout << "Заграничный паспорт:  " << endl;
+		pasport1->Output();
+
+		return 0;
+	}
+//********************************
+//Вариант 2
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+
+	class pasport
+	{
+	public:
+		pasport() {}
+		pasport(string name, string f_name, string famali, string date, string regist, string vydan)
+		{
+			this->name = name;
+			this->f_name = f_name;
+			this->famali = famali;
+			this->date = date;
+			this->regist = regist;
+			this->vydan = vydan;
+			cout << name<<" " << f_name << " " << famali << " " << date << " " << regist << " " << vydan << endl;
+		}
+		string getname() { return name; }
+		string getfamali() { return famali; }
+		string getdate() { return date; }
+		void setname(string name) { this->name = name; }
+		void setfamali(string famali) { this->famali = famali; }
+		void setdate(string date) { this->date = date; }
+		virtual void Output() {
+			cout << this->getname() << " " << this->getfamali() << " " << this->getdate() << " " << endl;
+		}
+		~pasport() {}
+
+	private:
+		string famali;
+		string date;
+		string name;
+		string f_name;
+		string regist;
+		string vydan;
+	};
+	class zag_pasport :public pasport
+	{
+	public:
+		zag_pasport() {}
+		~zag_pasport() {}
+		string getviza() { return viza; }
+		void Output()override {
+			cout << this->getname() << " " << this->getfamali() << " " << " " << this->getdate()<<" " << viza;
+		}
+	private:
+		string viza = { "Американская виза" };
+	};
+
+
+	int main()
+	{
+		system("chcp 1251");
+		pasport pasport1("Максим", "Борисович", "Пономаренко", "06.05.1978", "калиниград", "овд калиниград");
+		zag_pasport zag_paport1;
+		zag_paport1.setname("Максим");
+		zag_paport1.setfamali("Пономаренко");
+		zag_paport1.setdate("06.05.1978");
+		cout << zag_paport1.getname() << " " << zag_paport1.getfamali() << " " << " " << zag_paport1.getdate()<<" "<<zag_paport1.getviza() << endl;
+		zag_paport1.Output();
+		return 0;
+	}

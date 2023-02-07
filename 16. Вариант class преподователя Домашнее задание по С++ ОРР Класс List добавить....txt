@@ -1,0 +1,137 @@
+/*
+Задание 1.
+В существующий класс односвязного списка добавить:
+операцию клонирования списка (функция должна возвращать
+адрес головы клонированного списка)
+*/
+#include <iostream>
+
+
+using namespace std;
+
+template <typename T>
+struct Element
+{
+    T data;
+    Element<T>* Next;
+};
+
+template <class T>
+class List 
+{
+    Element<T>* Head;
+    Element<T>* Tail;
+    int СountList;
+public:
+    List();
+    ~List();
+    void Add(T data);
+    void Del();
+    void DelAll();
+    void Print();
+    int GetCount();
+
+    Element<T> CopyList(const List& obj);
+};
+
+int main()
+{
+    system("chcp 1251");
+    List <char> lst;
+    char s[]{ "Здравствуй мир!" };
+    cout << s << endl;
+    int len = strlen(s);
+    for (int i{}; i < len; i++) 
+    {
+        lst.Add(s[i]);
+    }
+    lst.Print();
+    lst.Del();
+    lst.Del();
+    lst.Print();
+
+    List <int> lst2;
+    int mass[4]{ 1,2,3,4 };
+    for (int i{}; i < 4; i++)
+    {
+        lst2.Add(mass[i]);
+    }
+    lst2.Print();
+    List <int> lst3;
+    cout << "Метод CopyList lst2 копируем в lst3"<<endl;
+    lst3.CopyList(lst2);
+    lst3.Print();
+}
+
+template <class T>List<T>::List()
+{
+    Head = Tail = NULL;
+    СountList = 0;
+}
+template <class T>List<T>::~List()
+{
+    DelAll();
+}
+template <class T>void List<T>::Add(T data)
+{
+    Element<T>* temp = new Element<T>;
+    temp->data = data;
+    temp->Next = NULL;
+    if (Head != NULL)
+    {
+        Tail->Next = temp;
+        Tail = temp;
+    }
+    else
+    {
+        Head = Tail = temp;
+    }
+    СountList++;
+}
+template <class T>void List<T>::Del()
+{
+    Element<T>* temp = Head;
+    Head = Head->Next;
+    delete temp;
+}
+template <class T>void List<T>::DelAll()
+{
+    while (Head != NULL)
+    {
+        Del();
+    }
+}
+template <class T>void List<T>::Print()
+{
+    Element<T>* temp = Head;
+    while (temp != NULL) 
+    {
+        cout << temp->data << " ";
+        temp = temp->Next;
+    }
+    cout << endl;
+}
+template <class T>int List<T>::GetCount()
+{
+    return СountList;
+}
+
+template<class T>Element<T> List<T>::CopyList(const List& obj)
+{
+    if (!obj.Head) 
+    {
+        СountList = 0;
+        Head = Tail = NULL;
+    }
+    Head = new Element<T>(*obj.Head);
+    Element<T>* temp = Head;
+    СountList = 1;
+    for (Element<T>* i = obj.Head->Next; i != nullptr; i = i->Next)
+    {
+        temp->Next = new Element<T>(*i);
+        temp = temp->Next;
+        ++СountList;
+    }
+    temp->Next = nullptr;
+    return *Head;
+}

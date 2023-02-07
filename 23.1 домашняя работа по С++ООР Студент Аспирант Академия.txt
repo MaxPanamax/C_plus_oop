@@ -1,0 +1,69 @@
+//Задание 1.
+//Попробуйте усвоершенствовать свой экзаменационный проект с помощью
+//контейнеров stl.
+//Ответ на первое задание: Я использую уже векторы в своем решении оптимально подошел к решению задачи "Висилца"
+//
+//Задание 2.
+//Домашнее задание выполнить после прохождения темы "Наследование".
+//
+//Создайте класс Student, который будет содержать
+//информацию о студенте.С помощью механизма наследования, реализуйте класс Aspirant(аспирант —
+//	студент, который готовится к защите кандидатской
+//	работы) производный от Student.
+#include <iostream>
+#include <string>
+
+using namespace std;
+class Student
+{
+public:
+	Student(){}
+	Student(string name, string group) :name{ name }, group{ group } {}
+	~Student() {}
+	void setname(string name) { this->name = name; }
+	void setgroup(string group) { this->group = group; }
+	string getname() { return name; }
+	string getgroup() { return group; }
+	void bring_out() { cout << name << " " << group << endl; }
+private:
+	string name;
+	string group;
+};
+class Aspirant : public Student
+{
+public:
+	Aspirant() {}
+	~Aspirant() {}
+	string getdiscipline() { return  discipline; }
+	void setdiscipline(string discipline) { this->discipline = discipline; }
+private:
+	string discipline;
+};
+class Academy: public Aspirant
+{
+public:
+	Academy(){}
+	~Academy(){}
+	string gettime() { return time; }
+	void settime(string time) { this->time = time; }
+private:
+	string time;
+};
+
+int main()
+{
+	system("chcp 1251");
+	Student student1("Пономаренко М.Б."," БВ 112");
+	student1.bring_out();
+	Aspirant aspirant1;
+	Academy Top;
+	aspirant1.setname("Пономаренко М.Б.");
+	cout << aspirant1.getname() << endl;
+	Top.setname(" Пономаренко М.Б.");
+	Top.setgroup(" БВ 112");
+	Top.setdiscipline("Програмирование на С++");
+	Top.settime(" 17/06/2022");
+	cout<<Top.getname()<<"-" << Top.getgroup() << "-"<<Top.getdiscipline()<<"-" << Top.gettime() << endl;
+
+	return 0;
+}

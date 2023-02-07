@@ -1,0 +1,205 @@
+//Задание 1
+//Создайте класс с именем Time для хранения времени.
+//В классе должна быть функция - член, которая даёт приращение времени, хранящееся в объекте Time, равное 1 секунде.
+//Напишите соответствующие конструкторы и функции - члены.
+//В классе должны быть перегружены операции
+//>> , << , =, +=, -=, ().
+//Используйте обычную и дружественную перегрузку.
+
+
+//Time сутки 24 часа, минут 60, секунд 60. Я исходил из этого.
+#include<iostream>
+#include<Windows.h>
+#include<string>
+
+using namespace std;
+
+class Time
+{
+public:
+	Time()
+	{
+		hour = 0;
+		minute = 0;
+		second = 0;
+
+	}
+	Time(const int hour, const int minute, const int second)
+		:hour{ hour }, minute{ minute }, second{ second }{}
+	int gethour()
+	{
+		return hour;
+	}
+	int getminute()
+	{
+		return minute;
+	}
+	int getsecond()
+	{
+		return second;
+	}
+
+	void Show(ostream& strm) const
+	{
+		strm << hour << " : " << minute << " : " << second << endl;
+	}
+	// префиксная форма
+	int operator++()
+	{
+		return(*this).second++;
+	}
+
+
+	int operator--()
+	{
+		return (*this).second--;
+	}
+	Time& operator=(Time& c)
+	{
+		hour = c.hour;
+		minute = c.minute;
+		second = c.second;
+		return (*this);
+	}
+
+	Time& operator+=(Time& c)
+	{
+
+		if ((second += c.second) > 60)
+		{
+			second=second - 60;
+			minute++;
+
+		}
+
+		if ((minute += c.minute) > 60)
+		{
+
+			minute=minute - 60;
+
+			hour++;
+		}
+		if ((hour += c.hour) >24)
+		{
+			hour=hour - 24;
+		}
+		return (*this);
+	}
+	Time& operator-=(Time& c)
+	{
+
+		if ((second -= c.second) < 0)
+		{
+			second = 60 + second ;
+			minute--;
+
+		}
+
+		if ((minute -= c.minute) < 0)
+		{
+
+			minute = 60 + minute;
+
+			hour--;
+		}
+		if ((hour -= c.hour) < 0)
+		{
+			hour = 24 + hour ;
+		}
+		return (*this);
+	}
+	// постфиксная форма
+	int operator++(int)
+	{
+		return ++(*this).second;
+	}
+
+
+	int operator--(int)
+	{
+		return --(*this).second;
+	}
+
+	Time operator()(Time& c)
+	{
+		hour = c.hour;
+		minute = c.minute;
+		second = c.second;
+		return (*this);
+	}
+
+	istream& operator >> (istream& in)
+	{
+		cout << "Введите часы: " << endl;
+		cin >> (*this).hour;
+		cout << "Введите минуты: " << endl;
+		cin >> (*this).minute;
+		cout << "Введите секунды: " << endl;
+		cin >> (*this).second;
+		return in;
+	}
+
+	~Time() {};
+
+private:
+	int hour;
+	int minute;
+	int second;
+
+};
+ostream& operator<<(ostream& strm, const Time& time)
+{
+	time.Show(strm);
+	return strm;
+}
+
+int main()
+{
+	system("chcp 1251");
+	Time time(12, 55, 13);
+	cout << "time: " << time << endl;
+	Time time2;
+	cout << "time2: " << time2 << endl;
+	time2(time);
+	cout << "time2(time): " << endl;
+	cout << "Оператор (): " << time2 << endl;
+	cout << "Оператор ++(секунда)(time2++): " << time2++ << endl << time2 << endl;
+	Time time1(12, 34, 30);
+	cout << "time1: " << time1 << endl;
+	cout << "Операор --(секунда)(time1--): " << time1-- << endl << time1 << endl;
+	Time time3;
+	cout << "time3: " << time3 << endl;
+	cout << "time3 = time1" << endl;
+	time3 = time1;
+	cout << "Операор =: " << time3 << endl;
+	Time time4(20, 34, 48);
+	cout << " time4: " << time4 << endl;
+	cout << "time1: " << time1 << endl;
+	cout << "time4 += time1" << endl;
+	time4 += time1;//в классе время 24 часа 60 минут 60 секунд;
+	cout << "Оператор +=(time4): " << time4 << endl;
+	Time time5(8, 7, 15);
+	cout << "time5: " << time5 << endl;
+	cout << "time1: " << time1 << endl;
+	cout << "time5 -= time1" << endl;
+	time5 -= time1;//в классе время 24 часа 60 минут 60 секунд;
+	cout << "Оператор -=(time5): " << time5 << endl;
+	//----------------- Проверка если попадает в условия цткла if
+	Time time8(14, 34, 28);
+	Time time9(8, 7, 15);
+	cout << " time8: " << time8 << endl;
+	cout << "time9: " << time9 << endl;
+	
+	cout << "time8 += time9=" << endl;
+	time8 += time9;//в классе время 24 часа 60 минут 60 секунд;
+	cout << "Оператор +=(time8): " << time8 << endl;
+	
+	Time time6(14, 34, 28);
+	Time time7(9, 8, 25);
+	cout << " time6: " << time6 << endl;
+	cout << "time7: " << time7 << endl;
+	cout << "time6 -= time7" << endl;
+	time6 -= time7;//в классе время 24 часа 60 минут 60 секунд;
+	cout << "Оператор -=(time6): " << time6 << endl;
+	return 0;
+}

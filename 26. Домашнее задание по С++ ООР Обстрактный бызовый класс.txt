@@ -1,0 +1,67 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+//Создать абстрактный базовый класс Employer(служащий) с чисто виртуальной функцией Print().
+//Создайте три производных класса : President, Manager,
+//Worker.Переопределите функцию Print() для вывода
+//информации, соответствующей каждому типу служащего.
+class Employer
+
+{
+public:
+	Employer() {}
+	~Employer() {}
+	virtual void print() = 0;
+	
+protected:
+	string company_name = { "Огни Баку" };
+
+};
+class President :public Employer
+{
+public:
+	President() {}
+	~President() {}
+	void print()override { cout << " Название фирмы: " << company_name << ". Занимаемая должность: " << post << endl; }
+	
+private:
+	string post = { "Президент" };
+};
+
+class Manager :public Employer
+{
+public:
+	Manager() {}
+	~Manager() {}
+	void print()override { cout << " Название фирмы: " << company_name << ". Занимаемая должность: " << post << endl; }
+	
+private:
+	string post = { "Менеджер" };
+};
+
+class Worker :public Employer
+{
+public:
+	Worker() {}
+	~Worker() {}
+	void print()override { cout << " Название фирмы: " << company_name << ". Занимаемая должность: " << post << endl; }
+	
+private:
+	string post = { "Работник" };
+};
+
+int main()
+{
+	system("chcp 1251");
+
+	President President1;
+	Manager  Manager1;
+	Worker Woker1;
+	President1.print();
+	Manager1.print();
+	Woker1.print();
+
+	return 0;
+}

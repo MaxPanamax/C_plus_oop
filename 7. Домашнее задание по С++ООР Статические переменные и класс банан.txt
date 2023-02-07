@@ -1,0 +1,71 @@
+//Задание 1.
+//Создайте класс : Банан
+//Переменные класса : вес, цвет.
+//Вывести кол - во бананов в вашей программе(используя static переменную).А так же банан должен
+//поменять характеристики, если он весил 300 грамм и цвет его был
+//желтым, его характеристики меняются через n - ое количество времи на 200 грамм и цвет коричневый.
+//
+//Кол - во переменных класса указано примерно и их кол - во вы можете изменить.
+#include <iostream>
+#include <Windows.h>
+#include <string.h>
+
+using namespace std;
+
+class Banan
+{
+public:
+	Banan(){}
+	Banan(string Color, int Weight)
+	{
+		this->Color;
+		this->Weight;
+		
+	}
+	string getColor(){return Color;}
+	int getWeight(){return Weight;}
+	static int getQuantity() { return Quantity; }
+	
+	void Action()
+	{
+		int day;
+		cout << " У нас в корзине лежат бананы: " << endl;
+		cout << " Цвет: " << Color << endl;
+		cout<< " Вес (грамм): " << Weight << endl;
+		cout << " Через сколько дней вы хотите взглянуть на бананы? " << endl;
+		cin >> day;
+		if (day<3)
+		{
+			cout << " У нас в корзине лежат бананы: " << endl;
+			cout << " Цвет: " << Color << endl;
+			cout << " Вес (грамм): " << Weight << endl;
+
+		}
+		else
+		{
+			Color = { " Коричневый " };
+			Weight = 1000;
+			cout << " У нас в корзине лежат бананы: " << endl;
+			cout << " Цвет: " << Color << endl;
+			cout << " Вес (грамм): " << Weight << endl;
+		}
+	}
+	~Banan(){}
+
+private:
+	string Color = {" Желтый "};
+	int Weight=1200;
+	static int Quantity;
+};
+
+int Banan::Quantity{ 6 };
+int main()
+{
+	system("chcp 1251");
+	Banan banan1;
+	cout<<banan1.getQuantity()<<endl;
+	banan1.Action();
+
+
+	return 0;
+}

@@ -1,0 +1,265 @@
+//Реализуйте шаблонные функции для поиска максимума,
+//минимума, сортировки двумерного массива
+//(Быстрая сортировка / Quicksort),
+//двоичного поиска в массиве, замены элемента
+////массива на переданное значение.
+#include <iostream>
+#include <Windows.h>
+#include <algorithm>
+
+using namespace std;
+
+
+
+template<typename T> void massive(T** arr1, int row, int col)
+{
+    arr1 = new T * [row];
+    for (int i = 0; i < row; i++)
+    {
+        arr1[i] = new T[col];
+    }
+    double sum = 0;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            arr1[i][j] = static_cast<T>((double)rand() / (double)RAND_MAX * 10);
+            sum += arr1[i][j];
+            cout << arr1[i][j] << " ";
+        }
+        cout << endl;
+    }
+    int max = arr1[0][0];
+    int min = max;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            if (max < arr1[i][j])
+                max = arr1[i][j];
+        }
+    }
+    cout << "Максимум=" << max << endl;
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            if (min > arr1[i][j])
+                min = arr1[i][j];
+        }
+    }
+    cout << "Минимум=" << min;
+
+    for (int i = 0; i < row; i++)
+    {
+        delete[] arr1[i];
+    }
+    delete[] arr1;
+}
+
+template<typename T1> void massive_sort(T1** arr1,  int row, int col)
+{
+    arr1 = new T1 * [row];
+    for (int i = 0; i < row; i++)
+    {
+        arr1[i] = new T1[col];
+    }
+    double sum = 0;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            arr1[i][j] = static_cast<T1>((double)rand() / (double)RAND_MAX * 10);
+            sum += arr1[i][j];
+            cout << arr1[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    T1* Arr1 = new T1[row * col];
+    int index = 0;
+    for (int i = 0; i < row; i++)
+    {
+        memcpy_s(Arr1 + index, sizeof(Arr1[0]) * col, arr1[i], sizeof(arr1[0][0]) * col);
+        index += col;
+    }
+    sort(Arr1, Arr1 + row * col); 
+    index = 0;
+    for (int i = 0; i < row; i++)
+    {
+        memcpy_s(arr1[i], sizeof(arr1[0][0]) * col, Arr1 + index, sizeof(Arr1[0]) * col);
+        index += col;
+    }
+    cout << " отсортированный массив " << endl;
+    for (int i = 0;i < row;i++)
+    {
+        for (int c = 0;c < col;c++)
+        {
+            cout<< arr1[i][c] << " ";
+        }
+        cout << endl;
+    }
+    delete[] Arr1;  
+    for (int i = 0; i < row; i++)
+    {
+        delete[] arr1[i];
+    }
+    delete[] arr1;
+    cout << endl;
+}
+
+template<typename T2> void massive_search_key(T2** arr1, int row, int col,T2 key)
+{
+    arr1 = new T2 * [row];
+    for (int i = 0; i < row; i++)
+    {
+        arr1[i] = new T2[col];
+    }
+    double sum = 0;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            arr1[i][j] = static_cast<T2>((double)rand() / (double)RAND_MAX * 10);
+            sum += arr1[i][j];
+            cout << arr1[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    T2* Arr1 = new T2[row * col];
+    int index = 0;
+    for (int i = 0; i < row; i++)
+    {
+        memcpy_s(Arr1 + index, sizeof(Arr1[0]) * col, arr1[i], sizeof(arr1[0][0]) * col);
+        index += col;
+    }
+    sort(Arr1, Arr1 + row * col);
+    index = 0;
+    for (int i = 0; i < row; i++)
+    {
+        memcpy_s(arr1[i], sizeof(arr1[0][0]) * col, Arr1 + index, sizeof(Arr1[0]) * col);
+        index += col;
+    }
+    T2* Arr2 = new T2[row * col];
+    int number = 0;
+    for (int i = 0; i < row; i++)
+    {
+        memcpy_s(Arr2 + number, sizeof(Arr2[0]) * col, arr1[i], sizeof(arr1[0][0]) * col);
+        number += col;
+    }
+    int midl;
+    int lighthouse= false;
+    int lef = 0, righ = row * col - 1;
+    while ((lef <= righ) && (lighthouse != true))
+    {
+        midl = (lef + righ) / 2; 
+        if (Arr2[midl] == key) lighthouse = true;
+        if (Arr2[midl] > key) righ = midl - 1; 
+        else lef = midl + 1;
+    }
+    if (lighthouse) cout << "Ключ  " << key << " найден! " << endl;
+    else cout << " Ключ не найден! " << endl;
+    delete[] Arr2;
+    delete[] Arr1;
+    for (int i = 0; i < row; i++)
+    {
+        delete[] arr1[i];
+    }
+    delete[] arr1;
+}
+
+template<typename T3> void massive_key_replacement(T3** arr1, int row, int col,T3 key,T3 key_replacement)
+{
+    arr1 = new T3 * [row];
+    for (int i = 0; i < row; i++)
+    {
+        arr1[i] = new T3[col];
+    }
+    double sum = 0;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            arr1[i][j] = static_cast<T3>((double)rand() / (double)RAND_MAX * 10);
+            sum += arr1[i][j];
+            cout << arr1[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    T3* Arr1 = new T3[row * col];
+    int index = 0;
+    for (int i = 0; i < row; i++)
+    {
+        memcpy_s(Arr1 + index, sizeof(Arr1[0]) * col, arr1[i], sizeof(arr1[0][0]) * col);
+        index += col;
+    }
+    sort(Arr1, Arr1 + row * col);
+    index = 0;
+    for (int i = 0; i < row; i++)
+    {
+        memcpy_s(arr1[i], sizeof(arr1[0][0]) * col, Arr1 + index, sizeof(Arr1[0]) * col);
+        index += col;
+    }
+    cout << " Отсортированный массив для поика и замены ключа " << endl;
+    for (int i = 0;i < row;i++)
+    {
+        for (int c = 0;c < col;c++)
+        {
+            cout << arr1[i][c] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    bool lighthouse = false; 
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            if (arr1[i][j] > key)
+            {
+                lighthouse = true;
+                break;
+            }
+            if (arr1[i][j] == key) arr1[i][j] = key_replacement;
+        }
+        if (lighthouse) break;
+    }
+    cout << " Ключ заменен " << endl;
+    for (int i = 0;i < row;i++)
+    {
+        for (int c = 0;c < col;c++)
+        {
+            cout << arr1[i][c] << " ";
+        }
+        cout << endl;
+    }
+    delete[] Arr1;
+    for (int i = 0; i < row; i++)
+    {
+        delete[] arr1[i];
+    }
+    delete[] arr1;
+    cout << endl;
+}
+
+int main()
+{
+    system("chcp 1251");
+    int** arr = nullptr;
+    massive(arr, 3, 3);
+    cout << endl << endl;
+    cout << " Сортировка" << endl;
+    int** arr1 = nullptr;
+    massive_sort(arr1, 3, 3);
+    cout << " Поиск ключа " << endl;
+    int** arr2 = nullptr;
+    massive_search_key(arr2, 3, 3,1);
+    cout << " Поиск и замена ключа " << endl;
+    int** arr3 = nullptr;
+    massive_key_replacement(arr3, 3, 3, 1,9);
+
+    return 0;
+}

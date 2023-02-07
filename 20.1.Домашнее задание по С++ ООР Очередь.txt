@@ -1,0 +1,563 @@
+//Реализация —  очередь
+#include <iostream>
+#include <string.h>
+#include <time.h>
+using namespace std;
+class Queue
+{
+	//Очередь
+	int* Wait;
+	//Максимальный размер очереди
+	int MaxQueueLength;
+	//Текущий размер очереди
+	int QueueLength;
+public:
+	//Конструктор
+	Queue(int m);
+	//Деструктор
+	~Queue();
+	//Добавление элемента
+	void Add(int c);
+	//Извлечение элемента
+	int Extract();
+	//Очистка очереди
+	void Clear();
+	//Проверка существования элементов в очереди
+	bool IsEmpty();
+	//Проверка на переполнение очереди
+	bool IsFull();
+
+		//Количество элементов в очереди
+		int GetCount();
+	//демонстрация очереди
+	void Show();
+};
+void Queue::Show() {
+	cout << "\n-----------------------------------\n";
+	//демонстрация очереди
+	for (int i = 0;i < QueueLength;i++) {
+		cout << Wait[i] << " ";
+	}
+	cout << "\n-----------------------------------\n";
+}
+Queue::~Queue()
+{
+	//удаление очереди
+	delete[]Wait;
+}
+Queue::Queue(int m)
+{
+	//получаем размер
+	MaxQueueLength = m;
+	//создаем очередь
+	Wait = new int[MaxQueueLength];
+	//Изначально очередь пуста
+	QueueLength = 0;
+}
+void Queue::Clear()
+{
+	//Эффективная "очистка" очереди
+	QueueLength = 0;
+}
+
+bool Queue::IsEmpty()
+{
+	//Пуст?
+	return QueueLength == 0;
+}
+bool Queue::IsFull()
+{
+	//Полон?
+	return QueueLength == MaxQueueLength;
+}
+int Queue::GetCount()
+{
+	//Количество присутствующих в стеке элементов 
+	return QueueLength;
+}
+void Queue::Add(int c)
+{
+	//Если в очереди есть свободное место,
+	//то увеличиваем количество
+	//значений и вставляем новый элемент 
+	if (!IsFull())
+		Wait[QueueLength++] = c;
+}
+int Queue::Extract()
+{
+	//Если в очереди есть элементы, то возвращаем тот,
+	//который вошел первым и сдвигаем очередь 
+	if (!IsEmpty()) {
+		//запомнить первый
+		int temp = Wait[0];
+		//сдвинуть все элементы
+		for (int i = 1;i < QueueLength;i++)
+			Wait[i - 1] = Wait[i];
+
+		//уменьшить количество
+		QueueLength--;
+		//вернуть первый(нулевой)
+		return temp;
+	}
+	else //Если в стеке элементов нет
+		return -1;
+}
+void main()
+{
+	srand(time(0));
+	//создание очереди
+	Queue QU(25);
+	//заполнение части элементов
+	for (int i = 0;i < 5;i++) {
+		QU.Add(rand() % 50);
+	}
+	//показ очереди
+	QU.Show();
+	//извлечение элемента
+	QU.Extract();
+	//показ очереди
+	QU.Show();
+}
+///////**********************************************
+//Реализация — кольцевая очередь
+#include <iostream>
+#include <string.h>
+#include <time.h>
+using namespace std;
+class QueueRing
+{
+	//Очередь
+	int* Wait;
+	//Максимальный размер очереди
+	int MaxQueueLength;
+
+		//Текущий размер очереди
+		int QueueLength;
+public:
+	//Конструктор
+	QueueRing(int m);
+	//Деструктор
+	~QueueRing();
+	//Добавление элемента
+	void Add(int c);
+	//Извлечение элемента
+	bool Extract();
+	//Очистка очереди
+	void Clear();
+	//Проверка существования элементов в очереди
+	bool IsEmpty();
+	//Проверка на переполнение очереди
+	bool IsFull();
+	//Количество элементов в очереди
+	int GetCount();
+	//демонстрация очереди
+	void Show();
+};
+void QueueRing::Show() {
+	cout << "\n-----------------------------------\n";
+	//демонстрация очереди
+	for (int i = 0;i < QueueLength;i++) {
+		cout << Wait[i] << " ";
+	}
+
+		cout << "\n-------------------------------------\n";
+}
+QueueRing::~QueueRing()
+{
+	//удаление очереди
+	delete[]Wait;
+}
+QueueRing::QueueRing(int m)
+{
+	//получаем размер
+	MaxQueueLength = m;
+	//создаем очередь
+	Wait = new int[MaxQueueLength];
+	//Изначально очередь пуста
+	QueueLength = 0;
+}
+void QueueRing::Clear()
+{
+	//Эффективная "очистка" очереди
+	QueueLength = 0;
+}
+bool QueueRing::IsEmpty()
+{
+	//Пуст?
+	return QueueLength == 0;
+}
+bool QueueRing::IsFull()
+{
+	// Полон?
+	return QueueLength == MaxQueueLength;
+}
+
+int QueueRing::GetCount()
+{
+	//Количество присутствующих в стеке элементов 
+	return QueueLength;
+}
+void QueueRing::Add(int c)
+{
+	//Если в очереди есть свободное место, 
+	//то увеличиваем количество
+	//значений и вставляем новый элемент 
+	if (!IsFull())
+		Wait[QueueLength++] = c;
+}
+bool QueueRing::Extract()
+{
+	//Если в очереди есть элементы, то возвращаем тот,
+	//который вошел первым и сдвигаем очередь 
+	if (!IsEmpty()) {
+		//запомнить первый
+		int temp = Wait[0];
+		//сдвинуть все элементы
+		for (int i = 1;i < QueueLength;i++)
+			Wait[i - 1] = Wait[i];
+		//забрасываем первый "вытолкнутый элемент
+		//в конец"
+		Wait[QueueLength - 1] = temp;
+		return 1;
+	}
+	else return 0;
+}
+void main()
+{
+	srand(time(0));
+
+		//создание очереди
+		QueueRing QUR(25);
+	//заполнение части элементов
+	for (int i = 0;i < 5;i++) {
+		QUR.Add(rand() % 50);
+	}
+	//показ очереди
+	QUR.Show();
+	//извлечение элемента
+	QUR.Extract();
+	//показ очереди
+	QUR.Show();
+}
+//////////////////***************************************************
+//Очереди с приоритетным исключением
+#include <iostream>
+#include <string.h>
+#include <time.h>
+using namespace std;
+class QueuePriority
+{
+	
+		//Очередь
+		int* Wait;
+	//Приоритет
+	int* Pri;
+	//Максимальный размер очереди
+	int MaxQueueLength;
+	//Текущий размер очереди
+	int QueueLength;
+public:
+	//Конструктор
+	QueuePriority(int m);
+	//Деструктор
+	~QueuePriority();
+	//Добавление элемента
+	void Add(int c, int p);
+	//Извлечение элемента
+	int Extract();
+	//Очистка очереди
+	void Clear();
+	//Проверка существования элементов в очереди 
+	bool IsEmpty();
+	//Проверка на переполнение очереди
+	bool IsFull();
+	//Количество элементов в очереди
+	int GetCount();
+	//демонстрация очереди
+	void Show();
+};
+
+void QueuePriority::Show() {
+	cout << "\n-----------------------------------\n";
+	//демонстрация очереди
+	for (int i = 0;i < QueueLength;i++)
+	{
+		cout << Wait[i] << " - " << Pri[i] << "\n\n";
+	}
+	cout << "\n-----------------------------------\n";
+}
+QueuePriority::~QueuePriority()
+{
+	//удаление очереди
+	delete[]Wait;
+	delete[]Pri;
+}
+QueuePriority::QueuePriority(int m)
+{
+	//получаем размер
+	MaxQueueLength = m;
+	//создаем очередь
+	Wait = new int[MaxQueueLength];
+	Pri = new int[MaxQueueLength];
+	//Изначально очередь пуста
+	QueueLength = 0;
+}
+void QueuePriority::Clear()
+{
+	//Эффективная "очистка" очереди
+	QueueLength = 0;
+}
+bool QueuePriority::IsEmpty()
+{
+	//Пуст?
+	return QueueLength == 0;
+}
+
+bool QueuePriority::IsFull()
+{
+	//Полон?
+	return QueueLength == MaxQueueLength;
+}
+int QueuePriority::GetCount()
+{
+	//Количество присутствующих в стеке элементов 
+	return QueueLength;
+}
+void QueuePriority::Add(int c, int p)
+{
+	//Если в очереди есть свободное место, 
+	//то увеличиваем количество
+	//значений и вставляем новый элемент
+	if (!IsFull()) {
+		Wait[QueueLength] = c;
+		Pri[QueueLength] = p;
+		QueueLength++;
+	}
+}
+int QueuePriority::Extract()
+{
+	//Если в очереди есть элементы, то возвращаем тот,
+	//у которого наивысший приоритет и сдвигаем очередь
+	if (!IsEmpty()) {
+		//пусть приоритетный элемент - нулевой
+		int max_pri = Pri[0];
+		//а приоритетный индекс = 0
+		int pos_max_pri = 0;
+		//ищем приоритет
+		for (int i = 1;i < QueueLength;i++)
+		
+			//если встречен более приоритетный элемент
+			if (max_pri < Pri[i]) {
+				max_pri = Pri[i];
+				pos_max_pri = i;
+			}
+		//вытаскиваем приоритетный элемент
+		int temp1 = Wait[pos_max_pri];
+		int temp2 = Pri[pos_max_pri];
+		//сдвинуть все элементы
+		for (int i = pos_max_pri;i < QueueLength - 1;i++) {
+			Wait[i] = Wait[i + 1];
+			Pri[i] = Pri[i + 1];
+		}
+		//уменьшаем количество
+		QueueLength--;
+		//возврат извлеченного элемента
+		return temp1;
+	}
+	else return -1;
+}
+void main()
+{
+	srand(time(0));
+	//создание очереди
+	QueuePriority QUP(25);
+	//заполнение части элементов
+	for (int i = 0;i < 5;i++) {
+		//значения от 0 до 99 (включительно)
+		//и приоритет от 0 до 11 (включительно)
+		QUP.Add(rand() % 100, rand() % 12);
+	}
+	
+		//показ очереди
+		QUP.Show();
+	//извлечение элемента
+	QUP.Extract();
+	//показ очереди
+	QUP.Show();
+}
+//************************************************************************************
+//Очередь с приоритетным включением 
+#include <iostream>
+#include <string.h>
+#include <time.h>
+using namespace std;
+class QueuePriority
+{
+
+	//Очередь
+	int* Wait;
+	//Приоритет
+	int* Pri;
+	//Максимальный размер очереди
+	int MaxQueueLength;
+	//Текущий размер очереди
+	int QueueLength;
+public:
+	//Конструктор
+	QueuePriority(int m);
+	//Деструктор
+	~QueuePriority();
+
+	//Добавление по приаритету
+	void AddPri(int c, int p);
+	//Извлечение элемента
+	int Extract();
+	//Очистка очереди
+	void Clear();
+	//Проверка существования элементов в очереди 
+	bool IsEmpty();
+	//Проверка на переполнение очереди
+	bool IsFull();
+	//Количество элементов в очереди
+	int GetCount();
+	//демонстрация очереди
+	void Show();
+};
+
+void QueuePriority::Show() 
+{
+	cout << "\n-----------------------------------\n";
+	//демонстрация очереди
+	for (int i = 0; i < QueueLength; i++)
+	{
+		cout << Wait[i] << " - " << Pri[i] << "\n\n";
+	}
+	cout << "\n-----------------------------------\n";
+}
+QueuePriority::~QueuePriority()
+{
+	//удаление очереди
+	delete[]Pri;
+	delete[]Wait;
+}
+QueuePriority::QueuePriority(int m)
+{
+	//получаем размер
+	MaxQueueLength = m;
+	//создаем очередь
+	Wait = new int[MaxQueueLength];
+	Pri = new int[MaxQueueLength];
+	//Изначально очередь пуста
+	QueueLength = 0;
+}
+void QueuePriority::Clear()
+{
+	//Эффективная "очистка" очереди
+	QueueLength = 0;
+}
+bool QueuePriority::IsEmpty()
+{
+	//Пуст?
+	return QueueLength == 0;
+}
+
+bool QueuePriority::IsFull()
+{
+	//Полон?
+	return QueueLength == MaxQueueLength;
+}
+int QueuePriority::GetCount()
+{
+	//Количество присутствующих в стеке элементов 
+	return QueueLength;
+}
+
+
+
+void QueuePriority::AddPri(int c, int p)
+{
+	if (!IsFull())
+	{
+		Wait[QueueLength] = c;
+		Pri[QueueLength] = p;
+		QueueLength++;
+	
+		for (int i = 0; i < QueueLength; i++)
+		{
+			for (int j = 0; j < QueueLength-1; j++)
+			{
+				if (Pri[j] > Pri[j + 1])
+				{
+				swap(Pri[j], Pri[j + 1]);
+				swap(Wait[j], Wait[j + 1]);
+				}
+			}
+		}
+	}
+	else
+	{
+		cout << "Очередь переполнина" << endl;
+	}
+
+}
+
+int QueuePriority::Extract()
+{
+	//Если в очереди есть элементы, то возвращаем тот,
+	//у которого наивысший приоритет и сдвигаем очередь
+	if (!IsEmpty())
+	{
+		//пусть приоритетный элемент - нулевой
+		int max_pri = Pri[0];
+		//а приоритетный индекс = 0
+		int pos_max_pri = 0;
+		//ищем приоритет
+		for (int i = 1; i < QueueLength; i++)
+		{
+			//если встречен более приоритетный элемент
+			if (max_pri < Pri[i])
+			{
+				max_pri = Pri[i];
+				pos_max_pri = i;
+			}
+		}
+			
+		//вытаскиваем приоритетный элемент
+		int temp1 = Wait[pos_max_pri];
+		int temp2 = Pri[pos_max_pri];
+		//сдвинуть все элементы
+		for (int i = pos_max_pri; i < QueueLength - 1; i++)
+		{
+			Wait[i] = Wait[i + 1];
+			Pri[i] = Pri[i + 1];
+		}
+		//уменьшаем количество
+		QueueLength--;
+		//возврат извлеченного элемента
+		return temp1;
+	}
+	else return -1;
+}
+int main()
+{
+	srand(time(0));
+	//создание очереди
+	QueuePriority QUP(25);
+	//заполнение части элементов
+	
+	for (int i = 0; i < 5; i++)
+	{
+		//значения от 0 до 99 (включительно)
+		//и приоритет от 0 до 11 (включительно)
+		QUP.AddPri(rand()%100, rand() % 10);
+	}
+
+	//показ очереди
+	QUP.Show();
+	//извлечение элемента
+	cout<<QUP.Extract()<<endl;
+
+	
+
+	return 0;
+}

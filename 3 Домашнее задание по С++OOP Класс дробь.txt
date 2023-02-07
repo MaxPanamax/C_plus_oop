@@ -1,0 +1,163 @@
+//Задание.(Пономаренко М.Б.)
+//Реализуйте класс Дробь.Необходимо хранить числитель
+//и знаменатель в качестве переменных - членов.Реализуйте
+//функции - члены для ввода данных в переменные - члены,
+//для выполнения арифметических операций(сложение,
+//	вычитание, умножение, деление, и т.д.). 
+#include <iostream>
+#include <Windows.h>
+
+						
+using namespace std;
+
+class Fraction//Дробь
+{
+private:
+	//Числитель и знаменатель
+	int numerator, denominator, numerator2, denominator2;
+public:
+	Fraction(){}
+	int getnumerator()
+	{
+		return numerator;
+	}
+	int getdenominator()
+	{
+		return denominator;
+	}
+	int getnumerator2()
+	{
+		return numerator2;
+	}
+	int getdenominator2()
+	{
+		return denominator2;
+	}
+	void Menu_Actions()//меню действия
+	{
+		char Action;//Дествие
+		Input();
+		cout << "Какие действие с дробями вы хотите выполнить? выбирите действия: (Сложение[+],Вычитание[-],Умножение[*],Деление[/])" << endl;
+		cin >> Action;
+		if (Action == '+')
+		{
+			Addition();
+		}
+		if (Action == '-')
+		{
+			Subtraction();
+		}
+		if (Action == '*')
+		{
+			Multiplication();
+		}
+		if (Action == '/')
+		{
+			Division();
+		}
+	}
+	void Input()//Ввод
+	{
+		cout << " Введите числитель перевой дроби: " << endl;
+		cin >> numerator;
+		cout << " Введите знаменитель первой дроби: " << endl;
+		cin >> denominator;
+		cout << " Введите числитель второй дроби: " << endl;
+		cin >> numerator2;
+		cout << " Введите знаменатель второй дроби: " << endl;
+		cin >> denominator2;
+	}
+	void Addition()//Сложение
+	{
+		int Meaning_Numerator=0;//Значение числителя
+		int  Meaning_Denominator = 0;//Значение знаменателя
+		cout << " Сложение дробей: " << endl;
+		cout << numerator<<"/"<< denominator <<"  +  " << numerator2 << "/" << denominator2<< endl;
+		if (denominator == denominator2)
+		{
+			Meaning_Numerator=numerator + numerator2;
+			cout << " = " << Meaning_Numerator << "/" << denominator <<endl;
+		}
+		if (denominator != denominator2)//Приводит к одному знаменателю
+		{
+			Meaning_Denominator = denominator * denominator2;
+			
+			
+				Meaning_Numerator = (numerator * denominator2) + (numerator2 * denominator);
+				cout << " = " << Meaning_Numerator << "/" << Meaning_Denominator << endl;
+			
+		}
+	}
+	void Subtraction()//Вычитание
+	{
+		int Meaning_Numerator = 0;//Значение числителя
+		int  Meaning_Denominator = 0;//Значение знаменателя
+		cout << " Вычитание дробей: " << endl;
+		cout << numerator << "/" << denominator << "  -  " << numerator2 << "/" << denominator2 << endl;
+		if (denominator == denominator2)
+		{
+			Meaning_Numerator = numerator - numerator2;
+			cout << " = " << Meaning_Numerator << "/" << denominator << endl;
+		}
+		if (denominator != denominator2)//Приводи к одному знаменателю
+		{
+			Meaning_Denominator = denominator * denominator2;
+
+
+			Meaning_Numerator = (numerator * denominator2) - (numerator2 * denominator);
+			cout << " = " << Meaning_Numerator << "/" << Meaning_Denominator << endl;
+
+		}
+	}
+	void Multiplication()//Умножение
+	{
+		int Meaning_Numerator = 0;//Значение числителя
+		int  Meaning_Denominator = 0;//Значение знаменателя
+		cout << " Умножение дробей: " << endl;
+		cout << numerator << "/" << denominator << "  *  " << numerator2 << "/" << denominator2 << endl;
+		if (denominator == denominator2)
+		{
+			Meaning_Numerator = numerator * numerator2;
+			cout << " = " << Meaning_Numerator << "/" << denominator << endl;
+		}
+		if (denominator != denominator2)//Перемножаем знаменатели и числител
+		{
+			Meaning_Denominator = denominator * denominator2;
+
+
+			Meaning_Numerator = numerator * numerator2;
+			cout << " = " << Meaning_Numerator << "/" << Meaning_Denominator << endl;
+
+		}
+	}
+	void Division()//Деление
+	{
+		int Meaning_Numerator = 0;//Значение числителя
+		int  Meaning_Denominator = 0;//Значение знаменателя
+		cout << " Деление дробей: " << endl;
+		cout << numerator << "/" << denominator << "  /  " << numerator2 << "/" << denominator2 << endl;
+		if (denominator == denominator2)
+		{
+			Meaning_Numerator = numerator / numerator2;
+			cout << " = " << Meaning_Numerator << "/" << denominator << endl;
+		}
+		if (denominator != denominator2)//Переворачиваем одну дробь и перемножаем
+		{
+			Meaning_Denominator = denominator * numerator2;
+
+
+			Meaning_Numerator = numerator * denominator2;
+			cout << " = " << Meaning_Numerator << "/" << Meaning_Denominator << endl;
+
+		}
+	}
+	~Fraction(){}
+};
+
+int main()
+{
+	system("chcp 1251");
+	Fraction Example;
+	Example.Menu_Actions();
+	return 0;
+}

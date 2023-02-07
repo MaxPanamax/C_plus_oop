@@ -1,0 +1,70 @@
+//задание 1
+//Учитывая строку слов, вам нужно найти слово с наивысшим баллом.
+//
+//Каждая буква слова оценивается в баллах в соответствии с ее положением в алфавите : a = 1, b = 2, c = 3и т.д.
+//
+//Вам нужно вернуть слово с наивысшим баллом в виде строки.
+//
+//Если два слова оцениваются одинаково, верните слово, которое появляется первым в исходной строке.
+//
+//Все буквы будут строчными, и все входные данные будут действительными.
+//
+//Данная задача и её решение вы можете посмотреть на сайте www.codewars.com, после регистрации на сервисе, чтобы зарегистрироваться нужно решить небольшую задачу.
+//После авторизации переходите по ссылке и можете увидеть решения пользователей сервиса.
+//https://www.codewars.com/kata/57eb8fcdf670e99d9b000272
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int play(string arr)
+{
+	int sum = 0;
+	for (int i = 0; i < arr.size(); i++)
+	{
+		if (arr[i] == 'a') { sum = sum + 1; }
+		if (arr[i] == 'b') { sum = sum + 2; }
+		if (arr[i] == 'c') { sum = sum + 3; }
+		if (arr[i] == 'd') { sum = sum + 4; }
+		if (arr[i] == 'e') { sum = sum + 5; }
+		if (arr[i] == 'f') { sum = sum + 6; }
+		if (arr[i] == 'g') { sum = sum + 7; }
+		if (arr[i] == 'h') { sum = sum + 8; }
+		if (arr[i] == 'i') { sum = sum + 9; }
+		if (arr[i] == 'j') { sum = sum + 10; }
+		if (arr[i] == 'k') { sum = sum + 11; }
+		if (arr[i] == 'l') { sum = sum + 12; }
+		if (arr[i] == 'm') { sum = sum + 13; }
+		if (arr[i] == 'n') { sum = sum + 14; }
+		if (arr[i] == 'o') { sum = sum + 15; }
+		if (arr[i] == 'p') { sum = sum + 16; }
+		if (arr[i] == 'q') { sum = sum + 17; }
+		if (arr[i] == 'r') { sum = sum + 18; }
+		if (arr[i] == 's') { sum = sum + 19; }
+		if (arr[i] == 't') { sum = sum + 20; }
+		if (arr[i] == 'u') { sum = sum + 21; }
+		if (arr[i] == 'v') { sum = sum + 22; }
+		if (arr[i] == 'w') { sum = sum + 23; }
+		if (arr[i] == 'x') { sum = sum + 24; }
+		if (arr[i] == 'y') { sum = sum + 25; }
+		if (arr[i] == 'z') { sum = sum + 26; }
+	}
+	return sum;
+}
+int main()
+{
+	system("chcp 1251");
+	string word, word2;
+	cout << " Введите слово на английском, каждая буква равна его порядковому номеру в алфавите" << endl;
+	cout << "слово набравшее большую сумму появится в консоле" << endl;
+	cout << "Введите первое слово: " << endl;
+	cin >> word;
+	cout << "Введите второе слово: " << endl;
+	cin >> word2;
+	int sum1 = play(word);
+	int sum2 = play(word2);
+	if (sum1 > sum2) { cout << " Большая сумма в первом слове: " << sum1; }
+	else { cout << " Большая сумма во втором слове: " << sum2; }
+
+	return 0;
+}

@@ -1,0 +1,6 @@
+﻿  Source.cpp
+C:\Users\User\source\repos\Project148\Source.cpp(157,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\source\repos\Project148\Source.cpp(176,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\source\repos\Project148\Source.cpp(189,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\source\repos\Project148\Source.cpp(270,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Project148.vcxproj -> C:\Users\User\source\repos\Project148\Debug\Project148.exe

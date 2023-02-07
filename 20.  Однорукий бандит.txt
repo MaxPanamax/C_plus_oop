@@ -1,0 +1,63 @@
+//Создать имитацию игры «однорукий бандит».Например,
+//при нажатии кнопки «Enter» происходит «вращение»
+//трех барабанов(естественно, количество вращений
+//    каждого из них выбирается случайно), на которых изображены разные значки; и если выпадает определенная
+//    комбинация, то игрок получает какой - то выигрыш.
+#include <iostream>
+#include <random>
+#include <ctime>
+#include <windows.h>
+#include<Mmsystem.h> //для воиспровидения аудиофайлов
+#pragma comment(lib, "Winmm.lib")
+
+using namespace std;
+
+const char symbols[] = { char(0xb2), char(0xdb), char(0x40),
+                         char(0xfe), char(0xc5), char(0xce) };
+
+size_t  dim = sizeof(symbols) / sizeof(symbols[0]);
+
+size_t make_move(const size_t& big_prize = 500, // приз за 3
+    const size_t& prize = 100,  // приз за 2
+    const size_t& a_waste = 20    // плата за ход
+)
+{
+    system("cls");  // очистка экрана, только windows
+    char s_1 = symbols[rand() % dim];
+    char s_2 = symbols[rand() % dim];
+    char s_3 = symbols[rand() % dim];
+    cout << "\n\t" << s_1 << "\t \b\b";
+    cout << "\t" << s_2 << "\t \b\b";
+    cout << "\t" << s_3 << "\t \n\n";
+    if ((s_1 == s_2) && (s_2 == s_3)) { return big_prize - a_waste; }
+    if ((s_1 == s_2) || (s_2 == s_3) || (s_1 == s_3)) { return prize - a_waste; }
+    else { return (a_waste - 40); }
+}
+
+
+int main()
+{
+    system("chcp 1251");
+    srand(time(0));
+    unsigned long  cash = 100;      // начальная сумма
+ PlaySound(TEXT("menu.wav"), NULL, SND_FILENAME | SND_ASYNC);
+    cout << "********************Однарукий Бандит****************" << endl;
+    cout << "************************Правила**********************" << endl;
+    cout << " Вы покупаете сто манет. Это ваш БАНК" << endl;
+    cout << " И крутите барабан нажимая ввод и за каждое нажатие на ввод из вашего БАНКА снимают 20 монет" << endl;
+    cout << " Если на экране выподает два одинаковых символа вы выигрываете 100 монет минус плата за нажатие" << endl;
+    cout << " Если на экране выподает три одинаковых символа вы выигрываете 500 монет минус плата за нажатие" << endl;
+    cout << " Если хотите забрать выигрышь и выйти нажмите <z> и крупье отдаст ваш выигрыш в кассе" << endl;
+    cout << " Хотите играть в однорукого бандита? <Ввод>, выход <z>" << endl << endl;
+    while (cin.get() != 'z')
+    {
+       
+        cash += make_move();
+        cout << "Прибыль: " << cash << "\n\n";
+        if (cash <= 0)
+            break;
+    }
+    cout << "\nИгра закончена, вы выиграли " << cash << "$\n";
+
+    return 0;
+}

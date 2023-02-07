@@ -1,0 +1,309 @@
+/*
+Задание 1.
+В существующий класс односвязного списка добавить:
+операцию клонирования списка (функция должна возвращать
+адрес головы клонированного списка)
+*/
+
+#include <iostream>
+
+
+using namespace std;
+
+template<typename T>
+class List
+{
+public:
+	List();
+	//Метод: Вставить в конец списка(через этот метод можно заполнить список)
+	void push_back(T data);
+	//Геттер для счетчика
+	int getsize() { return size; }
+	//Метод поиска по индексу
+	T& operator[](const int index);
+	//Метод удаления первого элемента списка
+	void pop_front();
+	//Метод удалене всех элементов списка 
+	void clear();
+	//Метод Добавляет элемент в начало списка
+	void push_front(T data);
+	// Метод удаляет элемент из конца списка
+	void pop_back();
+	// Метод Вставляет элемент в список по конкретному индексу
+	void insert(T data, int index);
+	// Метод Удаляет элемент из списка по конкретному индексу
+	void removeAt(int index);
+	// метод клонирования списка (функция должна возвращать адрес головы клонированного списка)
+	auto CopyList(const List& obj);
+	//Метод вывода
+	void Print(List& obj);
+	//Деструктор
+	~List();
+
+private:
+	template<typename T>
+	class Node
+	{
+	public:
+		Node* pNext;
+		T data;
+		//Конструктор
+		Node(T data = T(), Node* pNext = NULL)
+		{
+			this->data = data;
+			this->pNext = pNext;
+		}
+	};
+	//будем хранить в ней количество элеменотов нашего списка
+	int size;
+	//Все элемента односвязанного списка будут выделятся в динамической пямяти по этому указатель на голове
+	Node<T>* head;
+};
+
+
+//Коструктор
+template<typename T>
+List<T>::List()
+{
+	size = 0;
+	head = NULL;
+}
+template<typename T>
+void List<T>::push_back(T data)
+{
+	if (head == NULL)
+	{
+		head = new Node<T>(data);
+	}
+	else
+	{
+		Node<T>* current = this->head;
+		while (current->pNext != NULL)
+		{
+			current = current->pNext;
+		}
+		current->pNext = new Node<T>(data);
+	}
+	size++;
+}
+template<typename T>
+T& List<T>::operator[](const int index)
+{
+	int counter = 0;
+	Node<T>* current = this->head;
+	while (current != NULL)
+	{
+		if (counter == index)
+		{
+			return current->data;
+		}
+		current = current->pNext;
+		counter++;
+	}
+}
+template<typename T>
+void List<T>::pop_front()
+{
+	Node<T>* temp = head;
+	head = head->pNext;
+	delete temp;
+	size--;
+}
+template<typename T>
+void List<T>::clear()
+{
+	while (size)//когда size будет ноль то мы выдим из цикла(false)
+	{
+		pop_front();
+	}
+}
+template<typename T>
+void List<T>::push_front(T data)
+{
+	head = new Node<T>(data, head);
+	size++;
+}
+template<typename T>
+void List<T>::pop_back()
+{
+	removeAt(size - 1);
+}
+template<typename T>
+void List<T>::insert(T data, int index)
+{
+	if (index == 0)
+	{
+		push_front(data);
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+		for (int i = 0; i < index - 1; i++)//Найти предыдущий элемент от требуемого индекса списка
+		{
+			previous = previous->pNext;
+		}
+		previous->pNext = new Node<T>(data, previous->pNext);
+		//для понимания логики кода нижняя расшифровка
+		/*Node<T>* newNode = new Node<T>(data, previous->pNext);
+		previous->pNext = newNode;*/
+		size++;
+	}
+}
+template<typename T>
+void List<T>::removeAt(int index)
+{
+	if (index == 0)
+	{
+		pop_front();
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+		for (int i = 0; i < index - 1; i++)//Найти предыдущий элемент от требуемого индекса списка
+		{
+			previous = previous->pNext;
+		}
+		Node<T>* toDelete = previous->pNext;
+		previous->pNext = toDelete->pNext;
+		delete toDelete;
+		size--;
+	}
+}
+template<typename T>
+List<T>::~List()
+{
+	clear();
+}
+template<class T>
+void List<T>::Print(List& obj)
+{
+	for (int i = 0; i < obj.getsize(); i++)
+	{
+		cout << obj[i] ;
+	}
+	cout <<endl;
+}
+template<class T>
+auto List<T>::CopyList(const List& obj)
+{
+	if (!obj.head)
+	{
+		size = 0;
+		head = NULL;
+	}
+	head = new Node<T>(*obj.head);
+	Node<T>* temp = head;
+	size = 1;
+	for (Node<T>* i = obj.head->pNext; i != nullptr; i = i->pNext)
+	{
+		temp->pNext = new Node<T>(*i);
+		temp = temp->pNext;
+		++size;
+	}
+	temp->pNext = nullptr;
+	return *head;
+}
+
+int main()
+{
+	system("chcp 1251");
+	//Ручное заполнение и вывод
+	List<int> lst;//добавление элемента в конец списка
+	lst.push_back(5);
+	lst.push_back(10);
+	lst.push_back(22);
+	for (int i = 0; i < lst.getsize(); i++)
+	{
+		cout << lst[i] << endl;
+	}
+	cout << " Метод поика по идексу" << endl;
+	cout << lst[2] << endl;
+	cout << "количество элементов в списке" << endl;
+	cout << lst.getsize() << endl;
+	cout << "вывода всех элементов нашего списка " << endl;
+	//Цикл вывода всех элементов нашего списка
+	for (int i = 0; i < lst.getsize(); i++)
+	{
+		cout << lst[i] << endl;
+	}
+	cout << endl << "Элементов в списке:  " << lst.getsize() << " " << endl << "Вызвать метод pop_front" << endl << endl;
+	lst.pop_front();
+	for (int i = 0; i < lst.getsize(); i++)
+	{
+		cout << lst[i] << endl;
+	}
+	cout << endl << "Элементов в списке:  " << lst.getsize() << endl;
+	//Рандомное заполнение и вывод
+	List<int> lsts;
+	int numbersCount;
+	cout << "Введите каличество чисел для рандомного заполнения: ";
+	cin >> numbersCount;
+	for (int i = 0; i < numbersCount; i++)
+	{
+		lsts.push_back(rand() % 10);
+	}
+	for (int i = 0; i < lsts.getsize(); i++)
+	{
+		cout << lsts[i] << endl;
+	}
+	cout << endl << endl;
+	List<int> lstt;
+	lstt.push_back(50);
+	lstt.push_back(12);
+	lstt.push_back(25);
+
+	cout << "вывода всех элементов нашего списка " << endl;
+	//Цикл вывода всех элементов нашего списка
+	for (int i = 0; i < lstt.getsize(); i++)
+	{
+		cout << lstt[i] << endl;
+	}
+	cout << endl << "Элементов в списке:  " << lstt.getsize() << " " << endl << "Вызвать метод clear" << endl << endl;
+	lstt.clear();
+	cout << endl << "Элементов в списке:  " << lstt.getsize() << endl;
+	lstt.push_front(1);//добавление элемента в начало списка
+	lstt.push_front(7);
+	lstt.push_front(22);
+	for (int i = 0; i < lstt.getsize(); i++)
+	{
+		cout << lstt[i] << endl;
+	}
+	cout << endl << "Вызов метода insert" << endl;
+	lstt.insert(99, 2);//Добавление элемента в список по индексу
+	for (int i = 0; i < lstt.getsize(); i++)
+	{
+		cout << lstt[i] << endl;
+	}
+	cout << endl << "Вызов метода removeAt" << endl;
+	lstt.removeAt(2);//Удаление элемента из списка по индексу
+	for (int i = 0; i < lstt.getsize(); i++)
+	{
+		cout << lstt[i] << endl;
+	}
+	cout << endl << "Вызов метода pop_back " << endl;
+	lstt.pop_back();//Удаление последнего элемента из списка
+	for (int i = 0; i < lstt.getsize(); i++)
+	{
+		cout << lstt[i] << endl;
+	}
+	cout << "Метод CopyList  клонирования lst1 в lst2: " << endl;
+	List<int>lst1;
+	List<int>lst2;
+	int numbersCount1;
+	cout << "Введите каличество чисел для рандомного заполнения: ";
+	cin >> numbersCount;
+	for (int i = 0; i < numbersCount; i++)
+	{
+		lst1.push_back(rand() % 10);
+	}
+	for (int i = 0; i < lst1.getsize(); i++)
+	{
+		cout << lst1[i] ;
+	}
+	cout << endl;
+	lst2.CopyList(lst1);
+	lst2.Print(lst2);
+
+	
+	return 0;
+}

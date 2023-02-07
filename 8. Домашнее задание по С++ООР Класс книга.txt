@@ -1,0 +1,148 @@
+//Создайте класс Book
+//Необходимо хранить данные : Автор, Название, Издательство,
+//Год, Количество, страниц.
+//Создать массив объектов.Вывести :
+//	■ список книг заданного автора;
+//■ список книг, выпущенных заданным издательством;
+//■ список книг, выпущенных после заданного года.
+//Используйте explicit конструктор и константные функции - члены(например, для отображения данных о книге и т.д.)
+#include <iostream>
+#include <Windows.h>
+#include <string.h>
+
+
+using namespace std;
+
+
+class Book
+{
+    char Autor[40];
+    char Title[40];
+    char Publish[40];
+    int Year;
+    int Sheet_num;
+public:
+    explicit Book(const char* a, const char* b, const char* c, int i, int n)
+    {
+        strcpy_s(Autor, a);
+        strcpy_s(Title, b);
+        strcpy_s(Publish, c);
+        Year = i;
+        Sheet_num = n;
+    }
+
+    char* getAutor() { return Autor; }
+    char* getTitle() { return Title; }
+    char* getPublish() { return Publish; }
+    int getYear() { return Year; }
+    int getSheet_num() { return Sheet_num; }
+
+    void setAutor(char* aut) { strcpy_s(Autor, aut); }
+    void setTitle(char* tit) { strcpy_s(Title, tit); }
+    void setPublish(char* pub) { strcpy_s(Publish, pub); }
+    void setYear(int y) { Year = y; }
+    void setSheet_num(int num) { Sheet_num = num; }
+
+    void show() {
+        cout << "Автор: " << Autor << "  " << endl;
+        cout << "Название книги: " << Title << "  " << endl;
+        cout << "Издательство: " << '\"' << Publish << '\"' << "  " << endl;
+        cout << "Год издания: " << Year << "  " << endl;
+        cout << "Количество страниц: " << Sheet_num << endl << endl;
+    }
+};
+
+void SeekOnAutor(const char* str, Book* ob)//Выбор по автору
+{
+    cout << "Список книг автора: " << str << endl;
+    for (int i = 0; i < 6; i++)
+    {
+
+        if (!strcmp((ob[i].getAutor()), str)) ob[i].show();
+    }
+    cout << endl;
+}
+
+void SeekOnPublish(const char* str, Book* ob)//Выбор по издательству
+{
+    cout << " Список книг издательства: " << str << endl;
+    for (int i = 0; i < 6; i++)
+    {
+
+        if (!strcmp((ob[i].getPublish()), str)) ob[i].show();
+    }
+    cout << endl;
+}
+
+void SeekOnYear(int h, Book* ob)//Выбор по году
+{
+    cout << "Список книг после указанного года издания: " << h << endl;
+    for (int i = 0; i < 6; i++)
+    {
+
+        if (ob[i].getYear() >= h) ob[i].show();
+    }
+    cout << endl;
+}
+
+int main()
+
+{
+    system("chcp 1251");
+    cout << "Список литературы в нашей библиотеке: " << endl << endl;
+    cout << "Верн, '20 000 лье под водой', Экстремо, 1995, 125" << endl;
+    cout << "Достоевский, 'Преступление и наказание', Экстремо, 2000, 350" << endl;
+    cout << "Достоевский, 'Белые ночи', Питер, 1998, 200" << endl;
+    cout << "Шекспир, 'Гамлет', Экстремо, 1999, 100" << endl;
+    cout << "Шекспир, 'Король Лир', Питер, 1996, 150" << endl;
+    cout << "Верн, 'Вокруг света за 80 дней',Питер , 1997, 150" << endl;
+    cout << endl << endl;
+    Book ob[] = {
+        Book("Верн","20 000 лье под водой","Экстремо",1995,125),
+        Book("Достоевский", "Преступление и наказание", "Экстремо", 2000, 350),
+        Book("Достоевский", "Белые ночи", "Питер",  1998, 200),
+        Book("Шекспир","Гамлет",  "Экстремо", 1999, 100),
+        Book("Шекспир", "Король Лир", "Питер", 1996, 150),
+        Book("Верн", "Вокруг света за 80 дней","Питер", 1997, 150)
+    };
+    //ob[1].show();
+    //cout << ob[2].getAutor() << endl;
+
+    char choice, strChoice[40];//Выбор в меню и выборв массиве
+    int h;//Выбор года
+
+    for (;;)
+    {
+        do {
+            cout << "Выберите пункт меню:" << endl
+                << " 1. Список книг по автору" << endl
+                << " 2. Список книг по наименованию издательства" << endl
+                << " 3. Список книг после указанного года издания" << endl
+                << "Выберите вариант справки (q для выхода): " << endl;
+            cin >> choice;
+        } while (choice < '1' || choice>'3' && choice != 'q');
+        if (choice == 'q') break;
+        cout << endl << endl;
+        switch (choice) {
+        case '1':
+            cout << "Введите имя автора: ";
+            cin >> strChoice;
+            SeekOnAutor(strChoice, ob);
+            break;
+        case '2':
+            cout << "Введите наименование издательства: ";
+            cin >> strChoice;
+            SeekOnPublish(strChoice, ob);
+
+            break;
+        case '3':
+            cout << "Введите отправной год: ";
+            cin >> h;
+            SeekOnYear(h, ob);
+            break;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}

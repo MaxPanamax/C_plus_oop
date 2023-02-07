@@ -1,0 +1,52 @@
+//Задание 1.
+//Попробуйте усвоершенствовать свой экзаменационный проект с помощью
+//контейнеров stl.
+//Ответ на первое задание: Я использую уже векторы в своем решении оптимально подошел к решению задачи "Висилца"
+//
+//Задание 2.
+//Домашнее задание выполнить после прохождения темы "Наследование".
+//
+//Создайте класс Student, который будет содержать
+//информацию о студенте.С помощью механизма наследования, реализуйте класс Aspirant(аспирант —
+//	студент, который готовится к защите кандидатской
+//	работы) производный от Student.
+#include <iostream>
+#include <string>
+
+using namespace std;
+class Student
+{
+public:
+	Student(string name, string group) { this->name = name;this->group = group; }
+	string getname() { return name; }
+	string getgroup() { return group; }
+	virtual void Output() { cout << getname() << " " << getgroup()<<" -Допущен"; }
+	Student() {}
+	~Student() {}
+
+private:
+	string name;
+	string group;
+};
+class Aspirant : public Student
+{
+public:
+	
+	Aspirant(string name, string group) :Student(name, group) {}
+	void Output() override { cout << getname() << " " << getgroup() << " Дата защиты: " << " " << getdate(); }
+	string getdate() { return date; }
+	~Aspirant() {}
+
+private:
+	string date = {"17/06/2022"};
+};
+
+int main()
+{
+	system("chcp 1251");
+	Student* student1 = new Aspirant("Пономаренко М.Б.","БВ 112");
+	student1->Output();
+	delete student1;
+	return 0;
+
+}

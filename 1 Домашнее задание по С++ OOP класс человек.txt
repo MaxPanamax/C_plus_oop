@@ -1,0 +1,115 @@
+Создать класс Человек.Для описания объекта использовать переменные: имя, фамилия, возраст, пол, занимаемая должность. Написать акссесоры и модификаторы для каждой переменной класса.(Пономаренко М.Б.)
+__________________________________________________________
+#include <iostream>
+#include <Windows.h>
+#include <string.h>
+
+
+using namespace std;
+
+class Humen
+{
+
+public:
+	char FIO[50];//ФИО
+	int age;//Возраст
+	char floor;//Пол
+	char post[20];//Занимаемая должность
+	int attendance[30];//Посищаемость (работы)
+//Посещаемость работника( Добавил сам для проработки работы на уроке)
+	double Middle_attendance()
+	{
+		double sum_attendance{};
+		for (int i = 0;i < 30;i++)
+		{
+			sum_attendance += attendance[i];
+		}
+		sum_attendance /= 30;
+		return sum_attendance;
+
+	}
+	//----------------------------------
+	void setFIO(const char mas[])
+	{
+		strcpy_s(FIO, 50, mas);
+	}
+	char* getFIO()
+	{
+		return FIO;
+	}
+	//------------------------------------
+	void setage(int m)
+	{
+		age = m;
+	}
+	int getage()
+	{
+		return age;
+	}
+	//-----------------------------------
+	void setfloor(char m)
+	{
+		floor = m;
+	}
+	char getfloor()
+	{
+		return floor;
+	}
+	//------------------------------------
+	void setpost(const char mas[])
+	{
+		strcpy_s(post, 20, mas);
+	}
+	char* getpost()
+	{
+		return post;
+	}
+	//------------------------------------
+	void setattendance(int* mas[])
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			cout << mas[i] << " ";
+		}
+	}
+	int* getattendence()
+	{
+		return attendance;
+	}
+	//-----------------------------------
+	//конструктор создает обьекты
+	//прописать код конструктора в класе
+	Humen() {}
+	//----------------------------------
+	// деструктор удоляет обьект создается по умаааааляанию в класе
+	//если работает с диномической памятью нам нужно прописать в ручную
+	~Humen() {}
+};
+
+int main()
+{
+	srand(time(0));
+	system("chcp 1251");
+	Humen Worker;
+
+	//-----------------------------------
+	strcpy_s(Worker.FIO, 50, "Ponomarenko M.B.");
+	cout << " Worker: " << Worker.FIO << " " << endl;
+	//------------------------------------
+	Worker.age = 43;
+	cout << " Age: " << Worker.age << endl;
+	//----------------------------------
+	Worker.floor = 'M';
+	cout << " Floor: " << Worker.floor << endl;
+	//-----------------------------------
+	strcpy_s(Worker.post, 20, "Сrisis manager");
+	cout << " Post: " << Worker.post << " " << endl;
+	//--------------------------------------
+	for (int i = 0; i < 30; i++)
+
+		Worker.attendance[i] = rand() % 10;
+	//Средняя посещаемость
+	cout << " Average attendance:  " << Worker.Middle_attendance() << endl;
+	//----------------------------------
+	return 0;
+}

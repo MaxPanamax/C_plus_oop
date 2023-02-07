@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+//Задание 1.Программа «Статистика»
+//Подсчитать, сколько раз каждое слово встречается в заданном тексте.
+//    Результат записать в коллекцию Dictionary<TKey, TValue>. 
+//    Текст использовать из приложения 1.
+//Вывести статистику по тексту в виде таблицы (рисунок 1).
+//Приложение 1.
+//Вот дом, Который построил Джек. А это пшеница, Которая в темном чулане хранится в доме,
+//    Который построил Джек. А это веселая птица-синица, Которая часто ворует пшеницу, 
+//    Которая в темном чулане хранится В доме, Который построил Джек.
+
+namespace Ponomarenko_HW_Collections_Generic
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string text = " Вот дом, Который построил Джек.\n" +
+                " А это пшеница, Которая в темном чулане хранится в доме,\n" +
+                " Который построил Джек. А это веселая птица-синица,\n" +
+                " Которая часто ворует пшеницу, Которая в темном чулане хранится В доме,\n" +
+                " Который построил Джек.";
+                
+            Console.WriteLine(text);
+            Console.WriteLine("\n Количество символов: "+text.Count()+"\n");
+            var count = CountWords(text);
+
+            var sort_Word = count.OrderBy(x => x.Key);
+            var sort_Frequency = sort_Word.OrderBy(x => x.Value);
+            string[] wordArr = text.Split(new сhar[]
+            { ' ', ',', '.', ':', '-', '(', ')', '“', '”', '\t', '\n' });
+            foreach (KeyValuePair<string, int> kvp in sort_Frequency)
+                Console.WriteLine("   {0, 16} {1, 3}", kvp.Key, kvp.Value);
+            Console.WriteLine("\n Количество уникальных слов: "+count.Count()+
+                " Количество слов: "+wordArr.Count());
+            Console.ReadKey();
+        }
+
+        public static Dictionary<string, int> CountWords(string text)
+        {
+            Dictionary<string, int> count = new Dictionary<string, int>();
+
+            if (String.IsNullOrWhiteSpace(text))
+            {
+                Console.WriteLine("\nВведите слова. В данном тексте нет ни одного слова.");
+                return count;
+            }
+
+            string[] wordArr1 = text.Split(new сhar[]
+            { ' ', ',', '.', ':', '-', '(', ')', '“', '”', '\t', '\n' });
+
+            foreach (string word in wordArr1)
+            {
+                if (word.Trim() != "")
+                {
+                    try
+                    {
+                        if (count.ContainsKey(word) == false)
+                            count.Add(word, 1);
+                        else
+                            count[word]++;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("{0}", e.Message);
+                    }
+                }
+            }
+            return count;
+        }
+    }
+}
